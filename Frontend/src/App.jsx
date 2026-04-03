@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import HeaderBar from './components/HeaderBar'
 import LoginScreen from './components/LoginScreen'
 import StatsCards from './components/StatsCards'
@@ -22,6 +22,7 @@ const STORAGE_KEY = 'task_app_tasks_v1'
 const createId = (prefix) => `${prefix}_${Math.random().toString(36).slice(2, 10)}_${Date.now()}`
 
 function App() {
+  const formSectionRef = useRef(null)
   const [currentUserId, setCurrentUserId] = useState(() => sessionStorage.getItem(SESSION_KEY) || '')
   const [tasks, setTasks] = useState([])
   const [form, setForm] = useState(emptyTaskForm)
@@ -159,6 +160,9 @@ function App() {
       assignedTo: task.assignedTo,
       linkedTaskId: task.linkedTaskId || '',
     })
+    requestAnimationFrame(() => {
+      formSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
   }
 
   const handleDeleteTask = (taskId) => {
@@ -286,7 +290,7 @@ function App() {
 
       <StatsCards visibleTasks={visibleTasks} />
 
-      <section className="form-row">
+      <section className="form-row" ref={formSectionRef}>
         <TaskForm
           editingTaskId={editingTaskId}
           form={form}

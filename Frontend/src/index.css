@@ -227,6 +227,7 @@ h4 {
 
 .form-row {
   margin-bottom: 20px;
+  scroll-margin-top: 20px;
 }
 
 .form-row .form-card {
