@@ -13,6 +13,7 @@ function priorityChipClass(priority) {
 export default function TaskList({
   filters,
   setFilters,
+  isAdmin,
   visibleTasks,
   tasks,
   users,
@@ -128,14 +129,16 @@ export default function TaskList({
                   </div>
                 </div>
 
-                <div className="btn-group" style={{ marginTop: 0 }}>
-                  <button type="button" className="btn-secondary btn-sm" onClick={() => handleEditTask(task)}>
-                    Edit
-                  </button>
-                  <button type="button" className="btn-danger btn-sm" onClick={() => handleDeleteTask(task.id)}>
-                    Delete
-                  </button>
-                </div>
+                {isAdmin && (
+                  <div className="btn-group" style={{ marginTop: 0 }}>
+                    <button type="button" className="btn-secondary btn-sm" onClick={() => handleEditTask(task)}>
+                      Edit
+                    </button>
+                    <button type="button" className="btn-danger btn-sm" onClick={() => handleDeleteTask(task.id)}>
+                      Delete
+                    </button>
+                  </div>
+                )}
 
                 <div className="comments">
                   <h4>Discussion</h4>

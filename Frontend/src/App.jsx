@@ -117,6 +117,10 @@ function App() {
   const handleSaveTask = (e) => {
     e.preventDefault()
     setError('')
+    if (!isAdmin) {
+      setError('Only admin can create/edit tasks.')
+      return
+    }
     if (!validateTask()) return
 
     if (editingTaskId) {
@@ -146,8 +150,8 @@ function App() {
   }
 
   const handleEditTask = (task) => {
-    if (!isAdmin && task.assignedTo !== currentUserId) {
-      setError('You are not allowed to edit this task.')
+    if (!isAdmin) {
+      setError('Only admin can edit tasks.')
       return
     }
     setError('')
@@ -168,8 +172,8 @@ function App() {
   const handleDeleteTask = (taskId) => {
     const task = tasks.find((t) => t.id === taskId)
     if (!task) return
-    if (!isAdmin && task.assignedTo !== currentUserId) {
-      setError('You are not allowed to delete this task.')
+    if (!isAdmin) {
+      setError('Only admin can delete tasks.')
       return
     }
     setError('')
@@ -290,19 +294,28 @@ function App() {
 
       <StatsCards visibleTasks={visibleTasks} />
 
-      <section className="form-row" ref={formSectionRef}>
-        <TaskForm
-          editingTaskId={editingTaskId}
-          form={form}
-          setForm={setForm}
-          isAdmin={isAdmin}
-          currentUserId={currentUserId}
-          assignableUsers={assignableUsers}
-          linkedOptions={linkedOptions}
-          onSubmit={handleSaveTask}
-          onCancel={resetForm}
-        />
-      </section>
+      {isAdmin ? (
+        <section className="form-row" ref={formSectionRef}>
+          <TaskForm
+            editingTaskId={editingTaskId}
+            form={form}
+            setForm={setForm}
+            isAdmin={isAdmin}
+            currentUserId={currentUserId}
+            assignableUsers={assignableUsers}
+            linkedOptions={linkedOptions}
+            onSubmit={handleSaveTask}
+            onCancel={resetForm}
+          />
+        </section>
+      ) : (
+        <section className="card" style={{ marginBottom: 20 }}>
+          <h2 style={{ marginBottom: 6 }}>View only</h2>
+          <p className="meta" style={{ margin: 0 }}>
+            Members can view tasks and participate in comments, but cannot create, edit, or delete tasks.
+          </p>
+        </section>
+      )}
 
       <TaskList
         filters={filters}
@@ -310,6 +323,7 @@ function App() {
         visibleTasks={visibleTasks}
         tasks={tasks}
         users={USERS}
+        isAdmin={isAdmin}
         commentFormByTask={commentFormByTask}
         updateCommentForm={updateCommentForm}
         handleAddComment={handleAddComment}
