@@ -3,7 +3,6 @@ import HeaderBar from './components/HeaderBar'
 import LoginScreen from './components/LoginScreen'
 import StatsCards from './components/StatsCards'
 import TaskForm from './components/TaskForm'
-import FiltersPanel from './components/FiltersPanel'
 import TaskList from './components/TaskList'
 import { PRIORITY_WEIGHT, USERS } from './constants/users'
 
@@ -76,7 +75,8 @@ function App() {
       })
   }, [tasks, isAdmin, currentUserId, filters])
 
-  const assignableUsers = isAdmin ? USERS.filter((u) => u.role === 'user') : [currentUser]
+  // Admin can assign to any user (including self); members only to themselves
+  const assignableUsers = isAdmin ? USERS : [currentUser]
 
   const resetForm = () => {
     setForm({
@@ -261,7 +261,7 @@ function App() {
   const handleLogout = () => {
     sessionStorage.removeItem(SESSION_KEY)
     setCurrentUserId('')
-    setTasks([])
+    // Do NOT clear tasks — that would overwrite localStorage with [] and wipe all data
     setEditingTaskId('')
     setCommentFormByTask({})
     setForm({ ...emptyTaskForm, assignedTo: USERS[1].id })
@@ -275,7 +275,7 @@ function App() {
   }
 
   return (
-    <div className="app">
+    <div className="app-shell">
       <HeaderBar
         currentUser={currentUser}
         isAdmin={isAdmin}
@@ -286,7 +286,7 @@ function App() {
 
       <StatsCards visibleTasks={visibleTasks} />
 
-      <section className="grid">
+      <section className="form-row">
         <TaskForm
           editingTaskId={editingTaskId}
           form={form}
@@ -298,10 +298,11 @@ function App() {
           onSubmit={handleSaveTask}
           onCancel={resetForm}
         />
-        <FiltersPanel filters={filters} setFilters={setFilters} />
       </section>
 
       <TaskList
+        filters={filters}
+        setFilters={setFilters}
         visibleTasks={visibleTasks}
         tasks={tasks}
         users={USERS}

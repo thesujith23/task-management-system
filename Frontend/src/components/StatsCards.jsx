@@ -3,18 +3,27 @@ export default function StatsCards({ visibleTasks }) {
   const pendingCount = visibleTasks.filter((t) => t.status === 'Pending').length
 
   return (
-    <section className="stats-grid">
+    <section className="stats-grid" aria-label="Task summary">
       <article className="card stat">
-        <p className="meta">Visible Tasks</p>
-        <h3>{visibleTasks.length}</h3>
+        <span className="stat-icon" aria-hidden>
+          ◎
+        </span>
+        <p className="stat-label">In view</p>
+        <p className="stat-value">{visibleTasks.length}</p>
       </article>
       <article className="card stat">
-        <p className="meta">Pending</p>
-        <h3>{pendingCount}</h3>
+        <span className="stat-icon" aria-hidden>
+          ◐
+        </span>
+        <p className="stat-label">Pending</p>
+        <p className="stat-value">{pendingCount}</p>
       </article>
       <article className="card stat">
-        <p className="meta">Completed</p>
-        <h3>{completedCount}</h3>
+        <span className="stat-icon" aria-hidden>
+          ✓
+        </span>
+        <p className="stat-label">Done</p>
+        <p className="stat-value">{completedCount}</p>
       </article>
     </section>
   )
