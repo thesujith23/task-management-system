@@ -53,7 +53,10 @@ export default function LoginScreen({ credentials, setCredentials, onLogin, erro
             <strong>Admin</strong> — <code>admin</code> / <code>admin123</code>
           </p>
           <p>
-            <strong>Team member</strong> — <code>user</code> / <code>user123</code>
+            <strong>Team member 1</strong> — <code>user1</code> / <code>user123</code>
+          </p>
+          <p>
+            <strong>Team member 2</strong> — <code>user2</code> / <code>user123</code>
           </p>
         </div>
       </section>

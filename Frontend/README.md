@@ -26,7 +26,8 @@ This project is implemented as a **frontend-only assignment solution** using `lo
 - Dummy credential-based login screen with username/password.
 - Two users:
   - Admin: `admin / admin123`
-  - Normal user: `user / user123`
+- Team member 1: `user1 / user123`
+- Team member 2: `user2 / user123`
 - Session persistence via `sessionStorage` key: `task_app_logged_in_user`
 - Logout clears active session state.
 
